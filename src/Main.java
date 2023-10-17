@@ -2,8 +2,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Main {
+    public static LinkedList<Character> history = new LinkedList<>();
     public static void main(String[] args) throws IOException {
         LinkedList<Task> input = new LinkedList<>();
         BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
@@ -22,12 +24,13 @@ public class Main {
                 }
             }
             if(srtf.hasTask()) {
-                System.out.println("time: " + time + " task: " + srtf.nextTask().id);
                 srtf.execute();
-            } else {
-                System.out.println("time: " + time + " task: idle");
             }
             time++;
+        }
+        int counter = 0;
+        for(char c : history) {
+            System.out.println("time: " + counter++ + " task: " + c);
         }
     }
 }

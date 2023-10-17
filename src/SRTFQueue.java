@@ -20,15 +20,14 @@ public class SRTFQueue {
 
     public void execute() {
         if(queue.isEmpty()) throw new EmptyStackException();
-        Task t = queue.peek();
-        if(t.remainingTime <= 1) {
-            queue.poll();
-        } else {
+        Task t = queue.poll();
+        if(!(t.remainingTime <= 1)) {
             t.remainingTime -= 1;
+            queue.add(t);
         }
+        Main.history.add(t.id);
     }
     static class TaskComparator implements Comparator<Task> {
-
         @Override
         public int compare(Task o1, Task o2) {
             int i = Integer.compare(o1.remainingTime, o2.remainingTime);
