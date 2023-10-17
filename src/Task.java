@@ -5,13 +5,6 @@ public class Task {
     public int remainingTime;
 
 
-    public Task(char id, int priority, int start_time, int remainingTime) {
-        this.id = id;
-        this.priority = priority;
-        this.start_time = start_time;
-        this.remainingTime = remainingTime;
-    }
-
     public Task(String arg) {
         String[] attrs = arg.split(",");
         this.id = attrs[0].charAt(0);
