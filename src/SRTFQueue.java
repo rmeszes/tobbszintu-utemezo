@@ -11,6 +11,13 @@ public class SRTFQueue {
         return !queue.isEmpty();
     }
 
+    public Task nextTask() {
+        if(queue.isEmpty()) {
+            return null;
+        }
+        return queue.peek();
+    }
+
     public void execute() {
         if(queue.isEmpty()) throw new EmptyStackException();
         Task t = queue.peek();

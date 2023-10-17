@@ -15,9 +15,17 @@ public class Main {
         }
         int time = 0;
         SRTFQueue srtf = new SRTFQueue();
-        while(time < 10) {
+        while(time < 20) {
             for(Task task : input) {
-                if(task.start_time == time) srtf.add(new Task(task.toString()));
+                if(task.start_time == time){
+                    if(task.priority == 1) srtf.add(new Task(task.toString()));
+                }
+            }
+            if(srtf.hasTask()) {
+                System.out.println("time: " + time + " task: " + srtf.nextTask().id);
+                srtf.execute();
+            } else {
+                System.out.println("time: " + time + " task: idle");
             }
             time++;
         }
