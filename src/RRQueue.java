@@ -23,13 +23,15 @@ public class RRQueue {
         if(!(t.remainingTime <= 1)) {
             t.remainingTime -= 1;
             tasks.addFirst(t);
+            Main.rrUsedTime++;
         } else { //kimenti meddig várt a taszk és kiszedi a még futók közül.
             Main.waitingTimesFinished.put(t.id,Main.waitingTimesRunning.get(t.id));
             Main.waitingTimesRunning.remove(t.id);
+            Main.rrUsedTime = 0;
         }
         Main.history.add(t.id);
         Main.incrementWaitTimes(t.id);
-        Main.rrUsedTime++;
+
     }
     public void rotate() {
         Task t = tasks.removeFirst();
