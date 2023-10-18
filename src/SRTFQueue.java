@@ -2,20 +2,13 @@ import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.PriorityQueue;
 
-public class SRTFQueue {
+public class SRTFQueue{
     private final PriorityQueue<Task> queue = new PriorityQueue<>(new TaskComparator());
     public void add(Task t) {
         queue.add(t);
     }
-    public boolean hasTask() {
+    public boolean hasNext() {
         return !queue.isEmpty();
-    }
-
-    public Task nextTask() {
-        if(queue.isEmpty()) {
-            return null;
-        }
-        return queue.peek();
     }
 
     public void execute() {
@@ -24,8 +17,12 @@ public class SRTFQueue {
         if(!(t.remainingTime <= 1)) {
             t.remainingTime -= 1;
             queue.add(t);
+        } else { //kimenti meddig várt a taszk és kiszedi a még futók közül.
+            Main.waitingTimesFinished.put(t.id,Main.waitingTimesRunning.get(t.id));
+            Main.waitingTimesRunning.remove(t.id);
         }
         Main.history.add(t.id);
+        Main.incrementWaitTimes(t.id);
     }
     static class TaskComparator implements Comparator<Task> {
         @Override

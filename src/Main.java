@@ -1,36 +1,79 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.Map;
 
 public class Main {
     public static LinkedList<Character> history = new LinkedList<>();
+    public static int totalRunTime = 0;
+    public static int rrUsedTime = 0;
+    public static HashMap<Character, Integer> waitingTimesRunning = new HashMap<>();
+    public static HashMap<Character, Integer> waitingTimesFinished = new HashMap<>();
     public static void main(String[] args) throws IOException {
         LinkedList<Task> input = new LinkedList<>();
-        BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         String line;
         for(int i = 0; i < 10; i++) {
-            line = r.readLine();
+            line = bufferedReader.readLine();
             if(line == null) break;
-            if(!line.isEmpty()) input.add(new Task(line));
+            if(!line.isEmpty()) {
+                Task t = new Task(line);
+                input.add(t);
+                totalRunTime += t.remainingTime;
+            }
         }
         int time = 0;
         SRTFQueue srtf = new SRTFQueue();
-        while(time < 20) {
+        RRQueue rr = new RRQueue();
+        while(time <= totalRunTime) {
+            //behelyezzük a taskokat a megfelelő queueba, amikor kezdődnek
             for(Task task : input) {
                 if(task.start_time == time){
-                    if(task.priority == 1) srtf.add(new Task(task.toString()));
+                    if(task.priority == 1) {
+                        srtf.add(new Task(task.toString()));
+                    } else if(task.priority == 0) {
+                        rr.add(new Task(task.toString()));
+                    }
+                    waitingTimesRunning.put(task.id, 0);
                 }
             }
-            if(srtf.hasTask()) {
+            //eddig
+
+            if(srtf.hasNext()) {
+                if(rrUsedTime == 1) { //ebben az esetben interruptált egy RR taszkot
+                    rr.rotate(); //ezért a végére tesszük őt
+                }
                 srtf.execute();
+            } else if (rr.hasNext()) {
+                rr.execute();
+            }
+            else {
+                rrUsedTime = 0;
+                history.add(' '); //szóköz == idle task
             }
             time++;
         }
-        int counter = 0;
+        char prev = ' ';
         for(char c : history) {
-            System.out.println("time: " + counter++ + " task: " + c);
+            if(c != prev && c != ' ') {
+                System.out.print(c);
+                prev = c;
+            }
+        }
+        System.out.println();
+        for(Map.Entry<Character,Integer> entry : waitingTimesFinished.entrySet()) {
+            System.out.print("" + entry.getKey() + ':' + entry.getValue() + ',');
+        }
+        System.out.println();
+    }
+
+    public static void incrementWaitTimes(char activeTask) {
+        for(Map.Entry<Character,Integer> entry : waitingTimesRunning.entrySet()) {
+            if(!entry.getKey().equals(activeTask)) {
+                entry.setValue(entry.getValue() + 1);
+            }
         }
     }
 }
