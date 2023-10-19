@@ -11,6 +11,7 @@ public class Main {
     public static int rrUsedTime = 0;
     public static HashMap<Character, Integer> waitingTimesRunning = new HashMap<>();
     public static HashMap<Character, Integer> waitingTimesFinished = new HashMap<>();
+    public static LinkedList<Character> incomingOrder = new LinkedList<>();
     public static void main(String[] args) throws IOException {
         LinkedList<Task> input = new LinkedList<>();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -37,6 +38,7 @@ public class Main {
                         rr.add(new Task(task.toString()));
                     }
                     waitingTimesRunning.put(task.id, 0);
+                    incomingOrder.add(task.id);
                 }
             }
             //eddig
@@ -63,8 +65,15 @@ public class Main {
             }
         }
         System.out.println();
-        for(Map.Entry<Character,Integer> entry : waitingTimesFinished.entrySet()) {
-            System.out.print("" + entry.getKey() + ':' + entry.getValue() + ',');
+        boolean first = true;
+        for(char taskId : incomingOrder) {
+            if(first) {
+                System.out.print("" + taskId + ':' + waitingTimesFinished.get(taskId));
+                first = false;
+            } else {
+                System.out.print("," + taskId + ':' + waitingTimesFinished.get(taskId));
+            }
+
         }
         System.out.println();
     }
