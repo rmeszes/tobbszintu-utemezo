@@ -28,7 +28,7 @@ public class Main {
         int time = 0;
         SRTFQueue srtf = new SRTFQueue();
         RRQueue rr = new RRQueue();
-        while(time <= totalRunTime) {
+        while(time < totalRunTime) {
             //behelyezzük a taskokat a megfelelő queueba, amikor kezdődnek
             for(Task task : input) {
                 if(task.start_time == time){
@@ -54,6 +54,7 @@ public class Main {
             else {
                 rrUsedTime = 0;
                 history.add(' '); //szóköz == idle task
+                totalRunTime++;
             }
             time++;
         }
