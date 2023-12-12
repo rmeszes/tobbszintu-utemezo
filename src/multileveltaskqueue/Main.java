@@ -1,3 +1,5 @@
+package multileveltaskqueue;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+//TODO: waiting times kiírás sorrend fix.
 public class Main {
     public static LinkedList<Character> history = new LinkedList<>();
     public static int totalRunTime = 0;

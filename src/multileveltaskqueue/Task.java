@@ -1,3 +1,5 @@
+package multileveltaskqueue;
+
 public class Task {
     public final char id;
     public final int priority; //lehetne bool, mert 2 értéke lehet, de nem lenne logikus, se fejleszthető

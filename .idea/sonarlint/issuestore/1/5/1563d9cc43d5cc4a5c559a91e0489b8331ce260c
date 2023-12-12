@@ -1,0 +1,6 @@
+
+t
+java:S1104"YMake remainingTime a static final constant or non-public and provide accessors if needed.(Şëûÿÿÿÿ
+0
+java:S1220""Move this file to a named package.
+o	java:S116"URename this field "start_time" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÓÀÍûÿÿÿÿ

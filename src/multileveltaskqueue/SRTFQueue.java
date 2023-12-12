@@ -1,3 +1,5 @@
+package multileveltaskqueue;
+
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.PriorityQueue;
@@ -14,7 +16,7 @@ public class SRTFQueue{
     public void execute() {
         if(queue.isEmpty()) throw new EmptyStackException();
         Task t = queue.poll();
-        if(!(t.remainingTime <= 1)) {
+        if(t.remainingTime > 1) {
             t.remainingTime -= 1;
             queue.add(t);
         } else { //kimenti meddig várt a taszk és kiszedi a még futók közül.
